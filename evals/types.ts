@@ -40,6 +40,10 @@ export interface SingleTurnResult {
   toolNames: string[];
   /** Whether any tool was selected */
   selectedAny: boolean;
+  /** Free-form text the model returned alongside (or instead of) tool calls */
+  text?: string;
+  /** Reasoning trace, if the model is a reasoning model */
+  reasoning?: string;
 }
 
 /**
