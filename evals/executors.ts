@@ -67,7 +67,7 @@ export const singleTurnExecutorWithMocks = async ( data: EvalData ): Promise<Sin
     }
   }
 
-  const { toolCalls } = await generateText({
+  const { toolCalls, text, reasoning } = await generateText({
     model: ollama(data.config?.model ?? DEFAULT_MODEL),
     messages,
     tools,
@@ -82,9 +82,15 @@ export const singleTurnExecutorWithMocks = async ( data: EvalData ): Promise<Sin
   
   const toolNames = calls.map( (tc) => tc.toolName );
 
+  const reasoningText = Array.isArray(reasoning)
+    ? reasoning.map((r) => (typeof r === "string" ? r : r.text ?? "")).join("\n")
+    : reasoning;
+
   return {
     toolCalls: calls,
     toolNames,
     selectedAny: calls.length > 0,
+    text,
+    reasoning: reasoningText,
   }
 };
